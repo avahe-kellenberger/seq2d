@@ -13,5 +13,5 @@ requires "nim >= 1.6.4"
 when not defined(release):
   requires "https://github.com/avahe-kellenberger/nimtest"
 
-task "runtests":
+task runtests, "Runs the test suite":
   exec "nimtest"
