@@ -18,23 +18,31 @@ template `width`*[T](this: Seq2D[T]): int =
 template `height`*[T](this: Seq2D[T]): int =
   this.height
 
-proc `[]`*[T](this: Seq2D[T], x, y: int): T {.inline.} =
+template checkForBoundsException[T](this: Seq2D[T], x, y: int) =
   when compileOption("checks"):
     if x >= this.width:
-      raise newException(Exception, fmt"x value of {x} outside bounds")
+      raise newException(IndexDefect, fmt"x value of {x} outside bounds")
     if y >= this.height:
-      raise newException(Exception, fmt"y value of {y} outside bounds")
+      raise newException(IndexDefect, fmt"y value of {y} outside bounds")
+
+proc `[]`*[T](this: Seq2D[T], x, y: int): T {.inline.} =
+  this.checkForBoundsException(x, y)
+  return this.data[x + this.width * y]
+
+proc `[]`*[T](this: var Seq2D[T], x, y: int): var T {.inline.} =
+  this.checkForBoundsException(x, y)
   return this.data[x + this.width * y]
 
 proc `[]=`*[T](this: var Seq2D[T], x, y: int, t: T) {.inline.} =
-  when compileOption("checks"):
-    if x >= this.width:
-      raise newException(Exception, fmt"x value of {x} outside bounds")
-    if y >= this.height:
-      raise newException(Exception, fmt"y value of {y} outside bounds")
+  this.checkForBoundsException(x, y)
   this.data[x + this.width * y] = t
 
 iterator items*[T](this: Seq2D[T]): tuple[x: int, y: int, value: T] =
+  for y in 0 ..< this.height:
+    for x in 0 ..< this.width:
+      yield (x, y, this[x, y])
+
+iterator mitems*[T](this: var Seq2D[T]): tuple[x: int, y: int, value: var T] =
   for y in 0 ..< this.height:
     for x in 0 ..< this.width:
       yield (x, y, this[x, y])
