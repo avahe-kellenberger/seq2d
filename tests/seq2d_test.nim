@@ -71,4 +71,19 @@ describe "Seq2D":
 
       assertEquals(grid[1, 3], 2)
 
+  describe "clear":
+
+    it "resets all values to default without changing the internal length":
+      var grid = newSeq2D[int](2, 2)
+      grid[0, 0] = 1
+      grid[0, 1] = 1
+      grid[1, 0] = 1
+      grid[1, 1] = 1
+
+      grid.clear()
+
+      assertEquals(grid[0, 0], 0)
+      assertEquals(grid[0, 1], 0)
+      assertEquals(grid[1, 0], 0)
+      assertEquals(grid[1, 1], 0)
 
