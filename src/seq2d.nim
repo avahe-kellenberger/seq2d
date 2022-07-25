@@ -52,7 +52,6 @@ iterator values*[T](this: Seq2D[T]): T =
     yield item
 
 proc clear*[T](this: var Seq2D[T]) =
-  for y in 0..<this.height:
-    for x in 0..<this.width:
-      this.data[x + this.width * y] = default(T)
+  for t in this.data.mitems:
+    reset(t)
 
