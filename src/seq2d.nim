@@ -12,6 +12,14 @@ proc newSeq2D*[T](width, height: int): Seq2D[T] =
   result.width = width
   result.height = height
 
+proc newSeq2D*[T](width, height: int, values: openArray[T]): Seq2D[T] =
+  result = Seq2D[T]()
+  if values.len != width * height:
+    raiseAssert "newSeq2D given invalid number of values: Received " & $values.len & ", expected " & $(width * height)
+  result.data = @values
+  result.width = width
+  result.height = height
+
 template `width`*[T](this: Seq2D[T]): int =
   this.width
 

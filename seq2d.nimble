@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.0"
+version       = "0.1.1"
 author        = "Avahe Kellenberger"
 description   = "A 2D Sequence Implementation"
 license       = "GPL-2.0-only"
@@ -9,9 +9,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.6.4"
-
-when not defined(release):
-  requires "https://github.com/avahe-kellenberger/nimtest"
+requires "nimtest >= 0.1.2"
 
 task runtests, "Runs the test suite":
   exec "nimtest"
